@@ -16,12 +16,10 @@ class Localization
      */
     public function handle($request, Closure $next)
     {
+        if ( session()->has('locale')) {
+            app()->setLocale(session()->get('locale'));
 
-        if ( \Session::has('locale')) {
-            \App::setLocale(\Session::get('locale'));
-
-            // You also can set the Carbon locale
-            Carbon::setLocale(\Session::get('locale'));
+            Carbon::setLocale(session()->get('locale'));
         }
 
         return $next($request);

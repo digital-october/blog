@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('locale/{locale}', function ($locale) {
-    \Session::put('locale', $locale);
+    session()->put('locale', $locale);
     return redirect()->back();
 });
 
@@ -38,17 +38,5 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('{post}/user/{user}/commented', 'CommentController@store')->name('comment.create');
         Route::delete('/comment/{comment}/delete', 'CommentController@destroy')->name('comment.delete');
     });
-
-    # Posts
-//    Route::get('/posts', 'PostController@index')->name('posts');
-//        Route::group(['prefix' => 'post'], function () {
-//            Route::get('/create', 'PostController@create')->name('post.create');
-//            Route::get('/show/{post}', 'PostController@show')->name('post.show');
-//            Route::get('/edit/{post}', 'PostController@edit')->name('post.edit');
-//            Route::post('/edit/{post}', 'PostController@update')->name('post.update');
-//            Route::get('/delete/{post}', 'PostController@destroy')->name('post.delete');
-//            Route::post('/create/{user}', 'PostController@store')->name('post.store');
-
-//        });
 });
 
