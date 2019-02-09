@@ -36,10 +36,10 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li><a href="{{ route('posts') }}" class="nav-link nav-link-page">Посты</a>
+                    <li><a href="{{ route('posts.index') }}" class="nav-link nav-link-page">{{ __('message.fields.posts') }}</a>
                     </li>
-                    <li><a href="{{ route('users.show') }}" class="nav-link nav-link-page">Люди</a></li>
-                    <li><a href="{{ route('post.create') }}" class="nav-link nav-link-page">Создать пост</a></li>
+                    <li><a href="{{ route('users.index') }}" class="nav-link nav-link-page">{{ __('message.fields.users') }}</a></li>
+                    <li><a href="{{ route('posts.create') }}" class="nav-link nav-link-page">{{ __('message.fields.create_post') }}</a></li>
                 </ul>
             </div>
 
@@ -53,8 +53,8 @@
                 <ul class="navbar-nav ml-auto">
                     <!-- Authentication Links -->
                     @guest
-                        <li><a class="nav-link" href="{{ route('login') }}">Войти</a></li>
-                        <li><a class="nav-link" href="{{ route('register') }}">Регистрация</a></li>
+                        <li><a class="nav-link" href="{{ route('login') }}">{{ __('auth.login') }}</a></li>
+                        <li><a class="nav-link" href="{{ route('register') }}">{{ __('auth.register') }}</a></li>
                     @else
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -66,7 +66,7 @@
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    Выход
+                                    {{ __('auth.logout') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -74,10 +74,17 @@
                                     @csrf
                                 </form>
                             </div>
+
                         </li>
                     @endguest
                 </ul>
             </div>
+
+            <ul class="navbar-nav ml-auto">
+                <li><a class="nav-link" href="/locale/en">en</a></li>
+                <li><a class="nav-link" href="/locale/ru">ru</a></li>
+            </ul>
+
         </div>
     </nav>
 

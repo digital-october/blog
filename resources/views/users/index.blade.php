@@ -4,16 +4,17 @@
     <div class="container">
 
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
 
-                    <div class="card-header">Все пользователи</div>
+                    <div class="card-header">All users</div>
 
                     <div class="card-body">
                         @foreach($users as $user)
-                            <h5>{{ $user->name }}</h5>
-                            @if(Auth::user()->role === 'admin')
-                                <p class="text-right">
+                            <span style="font-size: 22px">{{ $user->present()->fullName }}</span>,
+                            <span style="font-size: 10px">Account age: {{ $user->present()->accountAge }}</span>
+                            <p class="text-right">
+                                @if(Auth::check())
                                     {{ $user->email }} | {{ $user->role ?? 'user' }}
                                     <a href="{{ route('user.make.admin', $user->id) }}">
                                         <button type="button" class="btn btn-outline-primary">make admin</button>
@@ -24,9 +25,10 @@
                                     <a href="{{ route('user.delete', $user->id) }}">
                                         <button type="button" class="btn btn-outline-danger">delete user</button>
                                     </a>
-                                </p>
-                            @endif
-                            <br>
+                                @endif
+                            </p>
+
+                            <hr>
                         @endforeach
                     </div>
 

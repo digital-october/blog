@@ -8,17 +8,17 @@
                 <div class="card">
 
                     <div class="card-header">
-                        <h2>{{ $post->heading }}</h2>
+                        <h2>{{ $post->title }}</h2>
 
-                        Автор: <b>{{ \App\User::find($post->user_id)->name }}</b> <br>
-                        @if($post->user_id === Auth::user()->id or Auth::user()->role === 'admin')
-                            <a class="text-primary" href="{{ route('post.edit', $post->id) }}">Редактировать</a>
-                            <a class="text-danger" href="{{ route('post.delete', $post->id) }}">Удалить</a>
+                        {{ __('message.fields.author') }}: <b>{{ $post->user->name }}</b> <br>
+                        @if(Auth::user()->is($post->user))
+                            <a class="text-primary" href="{{ route('posts.edit', $post->id) }}">{{ __('message.fields.edit') }}</a>
+                            <a class="text-danger" href="{{ route('posts.destroy', $post->id) }}">{{ __('message.fields.delete') }}</a>
                         @endif
                     </div>
 
                     <div class="card-body">
-                        {{ $post->body }}
+                        {{ $post->content }}
                     </div>
 
                 </div>
@@ -26,11 +26,20 @@
 
             <div class="col-md-8">
                 <br>
-                <form method="POST" action="{{ route('comment.create', [$post->id, Auth::user()->id]) }}">
+                <form method="POST" action="{{ route('posts.comment.create', [$post->id, Auth::user()->id]) }}">
                     @csrf
-                    <input class="form-control" name="comment" placeholder="Ответить...">
 
-                    <button style="margin-top: 10px">Отправить</button>
+                    <input class="form-control{{ $errors->has('message') ? ' is-invalid' : '' }}"
+                           name="message" value="{{ old('message') }}" required autofocus
+                           placeholder="{{ __('message.fields.comment_on') }}...">
+
+                    @if ($errors->has('message'))
+                        <span class="invalid-feedback">
+                            <strong>{{ $errors->first('message') }}</strong>
+                        </span>
+                    @endif
+
+                    <button style="margin-top: 10px">{{ __('message.fields.send') }}</button>
                 </form>
 
             </div>
@@ -39,14 +48,15 @@
 
                 <div class="col-md-8">
                     <hr>
-                    Комментарии:
+                    {{ __('message.fields.comments') }}:
                     <div class="card">
                         @foreach($comments as $comment)
                             <div class="card-body">
-                                <b>[{{ \App\User::find($comment->user_id)->name }} {{ $comment->created_at }}]</b> <br>
-                                {{ $comment->text }}
-                                @if(Auth::user()->role === 'admin')
-                                    <a class="text-danger" href="{{ route('comment.delete', $comment->id) }}">Удалить</a>
+                                <b>[{{ $comment->user->name }} {{ $comment->created_at }}]</b> <br>
+                                {{ $comment->message }}
+                                @if(Auth::user()->is($comment->user))
+                                    <a class="text-danger"
+                                       href="{{ route('posts.comment.delete', $comment->id) }}">{{ __('message.fields.delete') }}</a>
                                 @endif
                             </div>
                         @endforeach

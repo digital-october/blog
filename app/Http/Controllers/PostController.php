@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Comment;
-use App\Post;
-use App\User;
-use Illuminate\Http\Request;
+use App\Domain\Posts\Post;
+use App\Domain\Users\User;
+
+use App\Http\Requests\Post\StorePost;
+use App\Http\Requests\Post\UpdatePost;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
@@ -24,7 +25,7 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -32,38 +33,17 @@ class PostController extends Controller
     }
 
     /**
-     * Create comment for one Post
-     *
-     * @param Request $request
-     * @param Post $post
-     * @param User $user
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function createComment(Request $request, Post $post, User $user)
-    {
-        $post->comments()->create([
-            'text' => $request->comment,
-            'user_id' => $user->id
-        ]);
-
-        return redirect()->back();
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param StorePost $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request, User $user)
+    public function store(StorePost $request, User $user)
     {
+        $user->post()->create($request->validated());
 
-        $user->post()->create([
-            'heading' => $request->heading,
-            'body' => $request->body,
-        ]);
-
-        return redirect(route('posts'));
+        return redirect(route('posts.index'));
     }
 
     /**
@@ -76,70 +56,46 @@ class PostController extends Controller
     {
         return view('posts.show', [
             'post' => $post,
-            'comments' => Comment::where('post_id', '=', $post->id)->get()->sortByDesc('created_at')
+            'comments' => $post->comments->sortByDesc('created_at')
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param Post $post
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        $post = Post::find($id);
-
-        return view('posts.edit', [
-            'heading' => $post->heading,
-            'body' => $post->body,
-        ]);
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @param UpdatePost $request
+     * @param Post $post
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePost $request, Post $post)
     {
-        $post = Post::find($id);
+        $post->update($request->validated());
 
-        $post->update([
-            'heading' => $request->heading,
-            'body' => $request->body,
-        ]);
-
-        return redirect(route('posts'));
+        return redirect(route('posts.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        Post::find($id)->delete();
-
-        return redirect(route('posts'));
-    }
-
-
-    /**
-     * Remove the one comment
-     *
-     * @param Comment $comment
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Post $post
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws \Exception
      */
-    public function destroyComment(Comment $comment)
+    public function destroy(Post $post)
     {
-        $comment->delete();
+        $post->delete();
 
-        return redirect()->back();
+        return redirect(route('posts.index'));
     }
 }

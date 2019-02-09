@@ -6,38 +6,56 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                            Изменить пост
+                        {{ __('message.fields.edit_post') }}
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('post.update', Auth::user()->id) }}">
+                        <form method="POST" action="{{ route('posts.update', $post->id) }}">
                             @csrf
 
                             <div class="form-group row">
-                                <label for="email"
-                                       class="col-sm-4 col-form-label text-md-right">Заголовок</label>
+                                <label for="title"
+                                       class="col-sm-4 col-form-label text-md-right">{{ __('message.fields.title') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="heading"
-                                           value="{{ $heading ?? null }}">
+                                    <input type="text"
+                                           class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}"
+                                           name="title"
+                                           value="{{ $post->title ?? null }}" required autofocus>
+
+                                    @if ($errors->has('title'))
+                                        <span class="invalid-feedback">
+                                            <strong>{{ $errors->first('title') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="email"
-                                       class="col-sm-4 col-form-label text-md-right">Текст</label>
+                                <label
+                                        class="col-sm-4 col-form-label text-md-right">{{ __('message.fields.content') }}</label>
 
                                 <div class="col-md-6">
-                                    <textarea type="text" class="form-control" name="body"
-                                              value="">{{ $body ?? null }}</textarea>
+                                    <textarea type="text"
+                                              class="form-control{{ $errors->has('content') ? ' is-invalid' : '' }}"
+                                              name="content"
+                                              required autofocus>
+                                        {{ $post->content ?? null }}
+                                    </textarea>
                                 </div>
+
+                                @if ($errors->has('content'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('content') }}</strong>
+                                    </span>
+                                @endif
                             </div>
 
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        Сохранить
+                                        {{ __('message.fields.update') }}
                                     </button>
 
                                 </div>

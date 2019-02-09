@@ -12,18 +12,18 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <a href="{{ route('post.show', $post->id) }}">{{ $post->heading }}</a>
+                            <a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
 
-                            ({{ $post->user()->first()->name }})
+                            ({{ $post->user->name }})
 
                             @if($post->user_id === Auth::user()->id or Auth::user()->role === 'admin')
-                                <a class="text-primary" href="{{ route('post.edit', $post->id) }}">Редактировать</a>
-                                <a class="text-danger" href="{{ route('post.delete', $post->id) }}">Удалить</a>
+                                <a class="text-primary" href="{{ route('posts.edit', $post->id) }}">{{ __('message.fields.edit') }}</a>
+                                <a class="text-danger" href="{{ route('posts.destroy', $post->id) }}">{{ __('message.fields.delete') }}</a>
                             @endif
                         </div>
 
                         <div class="card-body">
-                            {{ $post->body }}
+                            {{ $post->content }}
                         </div>
 
                     </div>
