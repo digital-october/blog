@@ -1,8 +1,7 @@
-#Blog-project
+# Blog-project
 
 Simple presentation of the site of the blog on Laravel
-
-###Status: in development...
+(While in development)
 
 ## Installation
 
