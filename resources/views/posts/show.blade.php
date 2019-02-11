@@ -10,10 +10,18 @@
                     <div class="card-header">
                         <h2>{{ $post->title }}</h2>
 
-                        {{ __('message.fields.author') }}: <b>{{ $post->user->name }}</b> <br>
+                        {{ __('message.fields.author') }}: <b>{{ $post->user->present()->fullName }}</b>
                         @if(Auth::user()->is($post->user))
-                            <a class="text-primary" href="{{ route('posts.edit', $post->id) }}">{{ __('message.fields.edit') }}</a>
-                            <a class="text-danger" href="{{ route('posts.destroy', $post->id) }}">{{ __('message.fields.delete') }}</a>
+                            <a class="btn btn-primary btn-sm float-right"
+                               href="{{ route('posts.edit', $post->id) }}">{{ __('message.fields.edit') }}</a>
+
+                            <form class="d-inline" method="post" action="{{ route('posts.destroy', $post->id) }}">
+                                @method('delete')
+                                @csrf
+                                <button class="btn btn-danger btn-sm float-right">
+                                    <i class="fa fa-trash"></i> {{ __('message.fields.delete') }}
+                                </button>
+                            </form>
                         @endif
                     </div>
 
@@ -39,7 +47,8 @@
                         </span>
                     @endif
 
-                    <button style="margin-top: 10px">{{ __('message.fields.send') }}</button>
+                    <button class="btn btn-default btn-sm"
+                            style="margin-top: 10px">{{ __('message.fields.send') }}</button>
                 </form>
 
             </div>
@@ -55,8 +64,14 @@
                                 <b>[{{ $comment->user->name }} {{ $comment->created_at }}]</b> <br>
                                 {{ $comment->message }}
                                 @if(Auth::user()->is($comment->user))
-                                    <a class="text-danger"
-                                       href="{{ route('posts.comment.delete', $comment->id) }}">{{ __('message.fields.delete') }}</a>
+                                    <form class="d-inline" method="post"
+                                          action="{{ route('posts.comment.delete', $comment->id) }}">
+                                        @method('delete')
+                                        @csrf
+                                        <button class="btn btn-danger btn-sm float-right">
+                                            <i class="fa fa-trash"></i> {{ __('message.fields.delete') }}
+                                        </button>
+                                    </form>
                                 @endif
                             </div>
                         @endforeach

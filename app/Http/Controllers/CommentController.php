@@ -35,7 +35,7 @@ class CommentController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroyComment(Comment $comment)
+    public function destroy(Comment $comment)
     {
         $comment->delete();
 

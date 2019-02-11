@@ -10,8 +10,9 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('posts.update', $post->id) }}">
+                        <form method="POST" action="{{ route('posts.update', $post) }}">
                             @csrf
+                            @method('PUT')
 
                             <div class="form-group row">
                                 <label for="title"
