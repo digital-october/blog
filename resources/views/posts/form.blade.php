@@ -10,9 +10,10 @@
                     </div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('posts.store', Auth::user()->id) }}">
+                        <form method="POST" action="{{ route('posts.store') }}">
                             @csrf
 
+                            <input type="hidden" name="user" value="{{ Auth::user()->id }}">
                             <div class="form-group row">
                                 <label for="title"
                                        class="col-sm-4 col-form-label text-md-right">{{ __('message.fields.title') }}</label>

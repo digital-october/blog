@@ -14,7 +14,7 @@
                         <div class="card-header">
                             <a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a>
 
-                            ({{ $post->user->name }})
+                            ({{ $post->user->present()->fullName }})
 
                             @if($post->user_id === Auth::user()->id or Auth::user()->role === 'admin')
                                 <a class="text-primary" href="{{ route('posts.edit', $post->id) }}">{{ __('message.fields.edit') }}</a>

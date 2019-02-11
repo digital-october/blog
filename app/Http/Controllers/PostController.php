@@ -36,12 +36,13 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StorePost $request
-     * @param User $user
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(StorePost $request, User $user)
+    public function store(StorePost $request)
     {
-        $user->post()->create($request->validated());
+        $post = new Post($request->validated());
+        $post->user()->associate(User::find($request->user));
+        $post->save();
 
         return redirect(route('posts.index'));
     }
