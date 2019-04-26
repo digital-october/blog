@@ -26,8 +26,10 @@ class StorePost extends FormRequest
         return [
             'user' => 'required|int|exists:users,id',
             'title' => 'required|string|max:255|min:2',
+            'author' => 'required|string',
             'content' => 'required|string',
-            'file' => 'nullable'
+            'file' => 'nullable',
+            'categories' => 'nullable|array',
         ];
     }
 }

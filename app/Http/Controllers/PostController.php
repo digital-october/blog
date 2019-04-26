@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Illuminate\Http\Request;
+
 use App\Domain\Posts\Post;
-use App\Domain\Posts\Status;
 use App\Domain\Users\User;
+use App\Domain\Posts\Status;
+use App\Domain\Categories\Category;
 
 use App\Http\Requests\Post\StorePost;
 use App\Http\Requests\Post\UpdatePost;
@@ -16,10 +20,18 @@ class PostController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        $post_query = Post::query();
+        $search = $request->search;
+
+        if (!empty($search)) {
+            $post_query = $post_query->where('title', 'ilike', "%{$search}%")
+                ->orWhere('content', 'ilike', "%{$search}%");
+        }
+
         return view('posts.index', [
-            'posts' => Post::query()->orderBy('created_at', 'desc')->simplePaginate(10)
+            'posts' => $post_query->orderBy('created_at', 'desc')->simplePaginate(10)
         ]);
     }
 
@@ -30,6 +42,13 @@ class PostController extends Controller
         ]);
     }
 
+    public function categoryIndex(Category $category)
+    {
+        return view('posts.index', [
+            'posts' => $category->posts()->orderBy('created_at', 'desc')->simplePaginate(10)
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -37,7 +56,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.form');
+        return view('posts.form', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -48,7 +69,8 @@ class PostController extends Controller
      */
     public function store(StorePost $request)
     {
-        $data = array_except($request->validated(), ['file']);
+        $data = array_except($request->validated(), ['file', 'categories']);
+        $categories = $request->categories;
 
         if ($request->hasFile('file')) {
             $data['file'] = $request->file->store('/', 'public');
@@ -58,6 +80,10 @@ class PostController extends Controller
         $post->user()->associate(User::find($request->user));
         $post->status()->associate(Status::whereSlug(Status::$waiting_moderation)->first());
         $post->save();
+
+        if (!empty($categories)) {
+            $post->categories()->syncWithoutDetaching($categories);
+        }
 
         return redirect(route('posts.index'));
     }
@@ -78,7 +104,8 @@ class PostController extends Controller
     {
         return view('posts.show', [
             'post' => $post,
-            'comments' => $post->comments->sortByDesc('created_at')
+            'comments' => $post->comments->sortByDesc('created_at'),
+            'categories' => $post->categories
         ]);
     }
 
@@ -90,7 +117,21 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', ['post' => $post]);
+        $selected = $post->categories;
+        $categories = Category::all();
+
+        foreach ($categories as $key => $category) {
+            foreach ($selected as $select) {
+                if ($select->is($category)) {
+                    $categories[$key]['selected'] = true;
+                }
+            }
+        }
+
+        return view('posts.edit', [
+            'post' => $post,
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -102,7 +143,19 @@ class PostController extends Controller
      */
     public function update(UpdatePost $request, Post $post)
     {
-        $post->update($request->validated());
+        $data = array_except($request->validated(), ['file', 'categories']);
+        $categories = $request->categories;
+
+        if ($request->hasFile('file') && $request->file('file')->isValid()) {
+            $data['file'] = $request->file->store('/', 'public');
+        }
+
+        $post->update($data);
+
+        if (!empty($categories)) {
+            $post->categories()->detach($post->categories);
+            $post->categories()->syncWithoutDetaching($categories);
+        }
 
         return redirect(route('posts.index'));
     }

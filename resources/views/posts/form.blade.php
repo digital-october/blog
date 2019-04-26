@@ -52,6 +52,19 @@
                     </div>
                 </div>
 
+                <div class="form-group row">
+                    <label
+                            class="col-sm-4 col-form-label text-md-right">Categories</label>
+
+                    <div class="col-md-6">
+                        <select class="selectpicker form-control" multiple data-live-search="true" name="categories[]">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
 
                 <div class="form-group row mb-0">
                     <div class="col-md-8 offset-md-4">

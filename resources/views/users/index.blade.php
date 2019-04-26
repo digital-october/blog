@@ -12,7 +12,7 @@
                 Место работы: {{ $user->jobs ?? 'не указано' }}
 
                 <br>
-                @if(Auth::check())
+                @if(Auth::check() and Auth::user()->isRoot)
                         {{ $user->email }} | {{ $user->role->name ?? 'user' }}
                         <a href="{{ route('user.make.admin', $user->id) }}">
                             <button type="button" class="btn btn-outline-primary">make admin</button>

@@ -34,10 +34,13 @@
                         <a href="{{ route('posts.create') }}"
                            class="nav-link nav-link-page">{{ __('message.fields.create_post') }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ route('moderation') }}"
-                           class="nav-link nav-link-page">Moderation</a>
-                    </li>
+
+                    @if (Auth::user()->isRoot or Auth::user()->isAdministrator or Auth::user()->isRedactor)
+                        <li class="nav-item">
+                            <a href="{{ route('moderation') }}"
+                               class="nav-link nav-link-page">Moderation</a>
+                        </li>
+                    @endif
                 </ul>
             @endif
         </div>

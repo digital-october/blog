@@ -45,8 +45,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('posts', 'PostController');
     Route::group(['as' => 'posts.', 'prefix' => 'posts'], function () {
+        Route::post('search', 'PostController@index')->name('search');
         Route::get('{post}/download', 'PostController@download')->name('download');
         Route::get('/user/{user}', 'PostController@userIndex')->name('user');
+        Route::get('/category/{category}', 'PostController@categoryIndex')->name('category');
         Route::post('{post}/user/{user}/commented', 'CommentController@store')->name('comment.create');
         Route::delete('/comment/{comment}/delete', 'CommentController@destroy')->name('comment.delete');
     });

@@ -25,7 +25,10 @@ class UpdatePost extends FormRequest
     {
         return [
             'title' => 'nullable|string|max:255|min:2',
+            'author' => 'required|string',
             'content' => 'nullable|string',
+            'file' => 'nullable',
+            'categories' => 'nullable|array',
         ];
     }
 }

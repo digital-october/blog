@@ -19,7 +19,7 @@
                                 }
                             @endphp
                             <li>
-                                <a href="#">{{ $category->name }}</a>
+                                <a href="{{ route('posts.category', $category->id) }}">{{ $category->name }}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -34,7 +34,7 @@
                     <ul class="list-unstyled mb-0">
                         @foreach($categories as $key => $category)
                             <li>
-                                <a href="#">{{ $category->name }}</a>
+                                <a href="{{ route('posts.category', $category->id) }}">{{ $category->name }}</a>
                             </li>
                         @endforeach
                     </ul>

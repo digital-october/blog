@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Domain\Roles\Role;
 use App\Domain\Users\User;
 use App\Domain\Users\VerifyUser;
 use App\Http\Controllers\Controller;
@@ -76,6 +77,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $user->role()->associate(Role::whereSlug(Role::$writer)->first());
 
         $verifyUser = VerifyUser::create([
             'user_id' => $user->id,

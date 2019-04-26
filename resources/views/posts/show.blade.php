@@ -38,6 +38,16 @@
     @endif
     <hr>
 
+    <!-- Categories -->
+    <p class="lead">
+        Categories:
+        @foreach($categories as $category)
+            <a class="p-2 text-muted" href="{{ route('posts.category', $category->id) }}">{{ $category->name }}</a>
+        @endforeach
+    </p>
+
+    <hr>
+
     <!-- Date/Time -->
     @if(! empty($post->published_at))
         <p>Posted on {{ \Carbon\Carbon::make($post->published_at)->format('d M Y') }}</p>
@@ -61,26 +71,30 @@
 
     <!-- Moderation block -->
     @if($post->status->slug !== 'accepted')
-        <div class="card my-4">
-            <h5 class="card-header">Moderation block:</h5>
-            <div class="card-body">
-                <a href="{{ route('moderation.accepted', $post->id) }}" class="col-4 btn btn-outline-success">Принять</a>
-                <hr>
-                <form class="form" method="post" action="{{ route('moderation.rework', $post->id) }}">
-                    @csrf
-                    <textarea name="message" class="form-control" id="" placeholder="Что доработать..." cols="50" rows="2"></textarea>
-                    <br>
-                    <button type="submit" class="btn btn-outline-warning col-4">Отправить на доработку</button>
-                </form>
-                <hr>
-                <form class="form" method="post" action="{{ route('moderation.reject', $post->id) }}">
-                    @csrf
-                    <textarea name="message" class="form-control" placeholder="Причина отклонения..." cols="50" rows="2"></textarea>
-                    <br>
-                    <button type="submit" class="btn btn-outline-danger col-4">Отклонить</button>
-                </form>
+        @if (Auth::user()->isRoot or Auth::user()->isAdministrator or Auth::user()->isRedactor)
+            <div class="card my-4">
+                <h5 class="card-header">Moderation block:</h5>
+                <div class="card-body">
+                    <a href="{{ route('moderation.accepted', $post->id) }}" class="col-4 btn btn-outline-success">Принять</a>
+                    <hr>
+                    <form class="form" method="post" action="{{ route('moderation.rework', $post->id) }}">
+                        @csrf
+                        <textarea name="message" class="form-control" id="" placeholder="Что доработать..." cols="50"
+                                  rows="2"></textarea>
+                        <br>
+                        <button type="submit" class="btn btn-outline-warning col-4">Отправить на доработку</button>
+                    </form>
+                    <hr>
+                    <form class="form" method="post" action="{{ route('moderation.reject', $post->id) }}">
+                        @csrf
+                        <textarea name="message" class="form-control" placeholder="Причина отклонения..." cols="50"
+                                  rows="2"></textarea>
+                        <br>
+                        <button type="submit" class="btn btn-outline-danger col-4">Отклонить</button>
+                    </form>
+                </div>
             </div>
-        </div>
+        @endif
     @endif
 
     <!-- Comments Form -->

@@ -20,10 +20,17 @@
                             <i class="fa fa-trash"></i> {{ __('message.fields.delete') }}
                         </button>
                     </form>
+
                     <hr class="mt-0 mb-0">
                     Статус: [<span class="text-danger">{{ $post->status->name }}</span>]
                     Предложен: [<span class="text-info">{{ $post->created_at->format('d.M.Y H:i:s') }}</span>]
                 @endif
+
+                <br>
+
+                @foreach($post->categories as $category)
+                    <a class="p-2 text-muted" href="{{ route('posts.category', $category->id) }}">{{ $category->name }}</a>
+                @endforeach
 
                 <span class="float-right">Автор: [{{ $post->user->present()->fullName }}]</span>
             </div>
