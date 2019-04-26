@@ -13,6 +13,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        $this->create(1, [
+            'first_name' => 'admin',
+            'last_name' => 'admin',
+            'email' => 'admin@admin.com',
+            'verified' => true
+        ]);
         $this->create(random_int(10, 15));
     }
 

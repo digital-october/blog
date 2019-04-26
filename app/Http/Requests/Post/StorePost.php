@@ -27,6 +27,7 @@ class StorePost extends FormRequest
             'user' => 'required|int|exists:users,id',
             'title' => 'required|string|max:255|min:2',
             'content' => 'required|string',
+            'file' => 'nullable'
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Posts\Post;
+use App\Domain\Posts\Status;
 use App\Domain\Users\User;
 
 use App\Http\Requests\Post\StorePost;
@@ -19,6 +20,13 @@ class PostController extends Controller
     {
         return view('posts.index', [
             'posts' => Post::query()->orderBy('created_at', 'desc')->simplePaginate(10)
+        ]);
+    }
+
+    public function userIndex(User $user)
+    {
+        return view('posts.index', [
+            'posts' => $user->posts()->orderBy('created_at', 'desc')->simplePaginate(10)
         ]);
     }
 
@@ -40,11 +48,24 @@ class PostController extends Controller
      */
     public function store(StorePost $request)
     {
-        $post = new Post($request->validated());
+        $data = array_except($request->validated(), ['file']);
+
+        if ($request->hasFile('file')) {
+            $data['file'] = $request->file->store('/', 'public');
+        }
+
+        $post = new Post($data);
         $post->user()->associate(User::find($request->user));
+        $post->status()->associate(Status::whereSlug(Status::$waiting_moderation)->first());
         $post->save();
 
         return redirect(route('posts.index'));
+    }
+
+
+    public function download(Post $post)
+    {
+        return response()->download(storage_path("app/public/{$post->file}"));
     }
 
     /**

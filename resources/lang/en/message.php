@@ -15,8 +15,9 @@ return [
         'create_post' => 'Create post',
         'edit_post' => 'Edit post',
         'comment_on' => 'Comment on',
+        'leave_comment' => 'Leave a Comment',
 
-        'author' => 'Author',
+        'author' => 'Author(s)',
         'title' => 'Title',
         'content' => 'Content',
     ]

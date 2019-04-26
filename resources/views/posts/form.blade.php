@@ -8,7 +8,7 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('posts.store') }}">
+            <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <input type="hidden" name="user" value="{{ Auth::user()->id }}">
@@ -23,12 +23,32 @@
                 </div>
 
                 <div class="form-group row">
+                    <label for="author"
+                           class="col-sm-4 col-form-label text-md-right">Author (s)</label>
+
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="author"
+                               value="{{ $author ?? null }}">
+                    </div>
+                </div>
+
+                <div class="form-group row">
                     <label
                             class="col-sm-4 col-form-label text-md-right">{{ __('message.fields.content') }}</label>
 
                     <div class="col-md-6">
-                                    <textarea type="text" class="form-control" name="content"
-                                              value="" rows="6">{{ $content ?? null }}</textarea>
+                         <textarea type="text" class="form-control" name="content"
+                              value="" rows="6">{{ $content ?? null }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label
+                            class="col-sm-4 col-form-label text-md-right">File</label>
+
+                    <div class="col-md-6">
+                        <input type="file" class="form-control" name="file"
+                               value="{{ $file ?? null }}">
                     </div>
                 </div>
 
@@ -38,7 +58,6 @@
                         <button type="submit" class="btn btn-primary">
                             {{ __('message.fields.save') }}
                         </button>
-
                     </div>
                 </div>
             </form>

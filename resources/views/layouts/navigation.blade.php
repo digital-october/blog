@@ -12,20 +12,34 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a href="{{ route('posts.index') }}"
-                       class="nav-link nav-link-page">{{ __('message.fields.posts') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}"
-                       class="nav-link nav-link-page">{{ __('message.fields.users') }}</a></li>
-                <li class="nav-item">
-                    <a href="{{ route('posts.create') }}"
-                       class="nav-link nav-link-page">{{ __('message.fields.create_post') }}</a>
-                </li>
-            </ul>
+            @if(\Auth::check())
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a href="{{ route('magazines.index') }}"
+                           class="nav-link nav-link-page">Magazines
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{{ route('posts.index') }}"
+                           class="nav-link nav-link-page">{{ __('message.fields.posts') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}"
+                           class="nav-link nav-link-page">{{ __('message.fields.users') }}</a></li>
+                    <li class="nav-item">
+                        <a href="{{ route('posts.user', \Auth::user()->id) }}"
+                           class="nav-link nav-link-page">My posts</a></li>
+                    <li class="nav-item">
+                        <a href="{{ route('posts.create') }}"
+                           class="nav-link nav-link-page">{{ __('message.fields.create_post') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('moderation') }}"
+                           class="nav-link nav-link-page">Moderation</a>
+                    </li>
+                </ul>
+            @endif
         </div>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -48,6 +62,9 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('user.profile', \Auth::id()) }}">
+                                Profile
+                            </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

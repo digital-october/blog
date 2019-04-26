@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\Users\User;
 
+use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -49,8 +50,50 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-
+        return view('users.show', [
+            'user' => $user
+        ]);
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     */
+    public function edit(User $user)
+    {
+        return view('users.edit', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdateUserRequest $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->validated());
+
+        return redirect(route('user.profile', $user->id));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->back();
+    }
+
 
     public function makeAdmin(User $user)
     {
@@ -66,43 +109,6 @@ class UserController extends Controller
         $user->update([
             'role' => null
         ]);
-
-        return redirect()->back();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param User $user
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function destroy(User $user)
-    {
-        $user->delete();
 
         return redirect()->back();
     }
