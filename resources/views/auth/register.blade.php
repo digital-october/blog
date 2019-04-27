@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <input id="name" type="text"
                                            class="form-control{{ $errors->has('patronymic') ? ' is-invalid' : '' }}"
-                                           name="last_name" value="{{ old('patronymic') }}" required autofocus>
+                                           name="patronymic" value="{{ old('patronymic') }}" required autofocus>
 
                                     @if ($errors->has('patronymic'))
                                         <span class="invalid-feedback">
