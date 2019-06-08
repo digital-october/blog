@@ -26,8 +26,8 @@ class PostController extends Controller
         $search = $request->search;
 
         if (!empty($search)) {
-            $post_query = $post_query->where('title', 'ilike', "%{$search}%")
-                ->orWhere('content', 'ilike', "%{$search}%");
+            $post_query = $post_query->where('title', 'like', "%{$search}%")
+                ->orWhere('content', 'like', "%{$search}%");
         }
 
         return view('posts.index', [

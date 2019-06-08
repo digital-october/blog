@@ -4,7 +4,7 @@
 
     <div class="card">
 
-        <div class="card-header">Users</div>
+        <div class="card-header">Пользователи</div>
 
         <div class="card-body">
             @foreach($users as $user)
