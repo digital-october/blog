@@ -58,7 +58,7 @@
 
                             <div class="form-group row">
                                 <label for="jobs"
-                                       class="col-md-4 col-form-label text-md-right">Job</label>
+                                       class="col-md-4 col-form-label text-md-right">Место работы</label>
 
                                 <div class="col-md-6">
                                     <input id="jobs" type="text"
@@ -71,7 +71,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <a href="{{ route('users.edit', $user->id) }}" type="submit" class="btn btn-primary">
-                                    Changed
+                                    Изменить
                                 </a>
                             </div>
                         </div>

@@ -18,7 +18,7 @@
 
     <!-- Author -->
     <p class="lead">
-        {{ __('message.fields.author') }}:
+        {{ __('Автор(ы)') }}:
         <a href="#">{{ $post->author }}</a>
     </p>
 

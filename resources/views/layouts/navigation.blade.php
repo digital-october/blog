@@ -3,7 +3,7 @@
     <div class="container">
 
         <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
+            Журнал
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -16,7 +16,7 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
                         <a href="{{ route('magazines.index') }}"
-                           class="nav-link nav-link-page">Magazines
+                           class="nav-link nav-link-page">Ежемесячные выпуски
                         </a>
                     </li>
                     <li class="nav-item active">
@@ -29,7 +29,7 @@
                            class="nav-link nav-link-page">{{ __('message.fields.users') }}</a></li>
                     <li class="nav-item">
                         <a href="{{ route('posts.user', \Auth::user()->id) }}"
-                           class="nav-link nav-link-page">My posts</a></li>
+                           class="nav-link nav-link-page">Мои статьи</a></li>
                     <li class="nav-item">
                         <a href="{{ route('posts.create') }}"
                            class="nav-link nav-link-page">{{ __('message.fields.create_post') }}</a>
@@ -38,7 +38,7 @@
                     @if (Auth::user()->isRoot or Auth::user()->isAdministrator or Auth::user()->isRedactor)
                         <li class="nav-item">
                             <a href="{{ route('moderation') }}"
-                               class="nav-link nav-link-page">Moderation</a>
+                               class="nav-link nav-link-page">Модерация</a>
                         </li>
                     @endif
                 </ul>
@@ -66,7 +66,7 @@
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('user.profile', \Auth::id()) }}">
-                                Profile
+                                Мой профиль
                             </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
