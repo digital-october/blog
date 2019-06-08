@@ -14,15 +14,17 @@
                 <br>
                 @if(Auth::check() and Auth::user()->isRoot)
                         {{ $user->email }} | {{ $user->role->name ?? 'user' }}
+                    <div class="btn-group" role="group" aria-label="Basic example">
                         <a href="{{ route('user.make.admin', $user->id) }}">
-                            <button type="button" class="btn btn-outline-primary">make admin</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-outline-primary">Сделать модератором</button>
                         </a>
                         <a href="{{ route('user.dismiss', $user->id) }}">
-                            <button type="button" class="btn btn-outline-warning">dismiss</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-outline-warning">Убрать роль</button>
                         </a>
                         <a href="{{ route('user.delete', $user->id) }}">
-                            <button type="button" class="btn btn-outline-danger">delete user</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-outline-danger">Удалить</button>
                         </a>
+                    </div>
                 @endif
 
                 <br>

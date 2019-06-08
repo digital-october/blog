@@ -46,15 +46,16 @@
             </div>
 
             <!-- Sidebar Widgets Column -->
-            <div class="col-md-4">
+            @if(Auth::check())
+                <div class="col-md-4">
 
-                <!-- Search Widget -->
-                @include('layouts.search')
+                    <!-- Search Widget -->
+                    @include('layouts.search')
 
-                <!-- Categories Widget -->
-                @include('layouts.categories')
-
-            </div>
+                    <!-- Categories Widget -->
+                    @include('layouts.categories')
+                </div>
+            @endif
         </div>
     </div>
 

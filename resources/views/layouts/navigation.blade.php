@@ -86,11 +86,11 @@
         </div>
 
         <ul class="navbar-nav ml-auto">
-            <li>
-                <a class="nav-link" href="/locale/en">
-                    <img src="{{ asset('images/icons/usa.png') }}" style="width: 20px;"alt="">
-                </a>
-            </li>
+            {{--<li>--}}
+                {{--<a class="nav-link" href="/locale/en">--}}
+                    {{--<img src="{{ asset('images/icons/usa.png') }}" style="width: 20px;"alt="">--}}
+                {{--</a>--}}
+            {{--</li>--}}
             <li>
                 <a class="nav-link" href="/locale/ru">
                     <img src="{{ asset('images/icons/ru.png') }}" style="width: 22px;"alt="">

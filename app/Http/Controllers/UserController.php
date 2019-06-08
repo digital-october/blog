@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Roles\Role;
 use App\Domain\Users\User;
 
 use App\Http\Requests\User\UpdateUserRequest;
@@ -97,18 +98,16 @@ class UserController extends Controller
 
     public function makeAdmin(User $user)
     {
-        $user->update([
-            'role' => 'admin'
-        ]);
+        $user->role()->associate(Role::find(4));
+        $user->save();
 
         return redirect()->back();
     }
 
     public function dismiss(User $user)
     {
-        $user->update([
-            'role' => null
-        ]);
+        $user->role()->associate(Role::find(3));
+        $user->save();
 
         return redirect()->back();
     }

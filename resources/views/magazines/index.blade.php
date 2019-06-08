@@ -7,7 +7,7 @@
         <div class="card">
 
             <div class="card-header">
-                <a href="{{ route('magazines.show', $magazine->id) }}" style="font-size: 20px">{{ $magazine->created_at->format('F Y') }}</a>
+                <a href="{{ route('magazines.show', $magazine->id) }}" style="font-size: 20px">{{ Date::parse($magazine->created_at)->format('F Y') }}</a>
 
                 @if(Auth::user()->isRoot)
                     <a class="btn btn-outline-primary btn-sm float-right"

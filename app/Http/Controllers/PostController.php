@@ -30,6 +30,10 @@ class PostController extends Controller
                 ->orWhere('content', 'like', "%{$search}%");
         }
 
+        if (!Auth::user()->isRoot and !Auth::user()->isAdministrator) {
+            $post_query->where('status_id', 2); // 2 = Одобрено
+        }
+
         return view('posts.index', [
             'posts' => $post_query->orderBy('created_at', 'desc')->simplePaginate(10)
         ]);

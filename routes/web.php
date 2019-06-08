@@ -21,6 +21,7 @@ Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser')->name('
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('locale/{locale}', function ($locale) {
+    $locale = 'ru';
     session()->put('locale', $locale);
     return redirect()->back();
 });
