@@ -28,7 +28,7 @@
                 @endif
 
                 <br>
-                <span style="font-size: 10px">Account age: {{ $user->present()->accountAge }}</span>
+                <span style="font-size: 10px">Зарегистрирован: {{ $user->present()->accountAge }}</span>
 
                 <hr>
             @endforeach

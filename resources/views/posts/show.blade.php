@@ -40,7 +40,7 @@
 
     <!-- Categories -->
     <p class="lead">
-        Categories:
+        Категории:
         @foreach($categories as $category)
             <a class="p-2 text-muted" href="{{ route('posts.category', $category->id) }}">{{ $category->name }}</a>
         @endforeach
@@ -52,7 +52,7 @@
     @if(! empty($post->published_at))
         <p>Posted on {{ \Carbon\Carbon::make($post->published_at)->format('d M Y') }}</p>
     @else
-        <p>Not published. Proposed by {{ $post->created_at->format('d M Y') }}</p>
+        <p>Не опубликована. Создана {{ $post->created_at->format('d M Y') }}</p>
     <hr>
     @endif
 
@@ -73,7 +73,7 @@
     @if($post->status->slug !== 'accepted')
         @if (Auth::user()->isRoot or Auth::user()->isAdministrator or Auth::user()->isRedactor)
             <div class="card my-4">
-                <h5 class="card-header">Moderation block:</h5>
+                <h5 class="card-header">Модерация:</h5>
                 <div class="card-body">
                     <a href="{{ route('moderation.accepted', $post->id) }}" class="col-4 btn btn-outline-success">Принять</a>
                     <hr>
