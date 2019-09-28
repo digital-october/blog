@@ -33,7 +33,7 @@
 
                 <div class="form-group row">
                     <label for="author"
-                           class="col-sm-4 col-form-label text-md-right">Author (s)</label>
+                           class="col-sm-4 col-form-label text-md-right">Автор(ы)</label>
 
                     <div class="col-md-6">
                         <input type="text" class="form-control" name="author"
@@ -72,7 +72,7 @@
 
                 <div class="form-group row">
                     <label
-                            class="col-sm-4 col-form-label text-md-right">Categories</label>
+                            class="col-sm-4 col-form-label text-md-right">Категории</label>
 
                     <div class="col-md-6">
                         <select class="selectpicker form-control" multiple data-live-search="true" name="categories[]">

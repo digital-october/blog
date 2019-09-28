@@ -101,7 +101,7 @@
                         </a>
                     </li>
                 </ul>
-                <p class="copyright text-muted">Copyright &copy; myLyrium@gmail.com 2019</p>
+                <p class="copyright text-muted">Copyright &copy;2019</p>
             </div>
         </div>
     </div>
