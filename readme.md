@@ -1,4 +1,4 @@
-# Blog-project
+# Blog-project (Science Magazine)
 
 Simple presentation of the site of the blog on Laravel
 (While in development)
@@ -9,7 +9,7 @@ Simple presentation of the site of the blog on Laravel
 
 `composer install`
 
-Create a Database (MySQL, PostgreSQL)
+Create a Database (MySQL or PostgreSQL)
 
 fill in the **.env** file, note the **.env.example**
 
