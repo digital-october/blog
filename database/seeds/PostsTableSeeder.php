@@ -19,7 +19,7 @@ class PostsTableSeeder extends Seeder
         foreach ($users as $user) {
             $posts = $this->make(random_int(1,5));
 
-            $user->post()->saveMany($posts);
+            $user->posts()->saveMany($posts);
         }
     }
 

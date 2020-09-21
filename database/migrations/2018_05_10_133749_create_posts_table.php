@@ -17,14 +17,26 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->longText('content');
-            $table->string('image')->nullable();
+            $table->string('author')->nullable();
+            $table->string('file')->nullable();
             $table->unsignedInteger('user_id');
+            $table->unsignedInteger('status_id');
+            $table->unsignedInteger('magazine_id')->nullable();
 
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
+
+            $table->foreign('status_id')
+                ->references('id')->on('statuses')
+                ->onDelete('cascade');
+
+            $table->foreign('magazine_id')
+                ->references('id')->on('magazines')
+                ->onDelete('set null');
         });
     }
 

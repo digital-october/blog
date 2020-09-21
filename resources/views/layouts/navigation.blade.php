@@ -3,7 +3,7 @@
     <div class="container">
 
         <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
+            Журнал
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -12,20 +12,37 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a href="{{ route('posts.index') }}"
-                       class="nav-link nav-link-page">{{ __('message.fields.posts') }}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}"
-                       class="nav-link nav-link-page">{{ __('message.fields.users') }}</a></li>
-                <li class="nav-item">
-                    <a href="{{ route('posts.create') }}"
-                       class="nav-link nav-link-page">{{ __('message.fields.create_post') }}</a>
-                </li>
-            </ul>
+            @if(\Auth::check())
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a href="{{ route('magazines.index') }}"
+                           class="nav-link nav-link-page">Ежемесячные выпуски
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{{ route('posts.index') }}"
+                           class="nav-link nav-link-page">{{ __('message.fields.posts') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}"
+                           class="nav-link nav-link-page">{{ __('message.fields.users') }}</a></li>
+                    <li class="nav-item">
+                        <a href="{{ route('posts.user', \Auth::user()->id) }}"
+                           class="nav-link nav-link-page">Мои статьи</a></li>
+                    <li class="nav-item">
+                        <a href="{{ route('posts.create') }}"
+                           class="nav-link nav-link-page">{{ __('message.fields.create_post') }}</a>
+                    </li>
+
+                    @if (Auth::user()->isRoot or Auth::user()->isAdministrator or Auth::user()->isRedactor)
+                        <li class="nav-item">
+                            <a href="{{ route('moderation') }}"
+                               class="nav-link nav-link-page">Модерация</a>
+                        </li>
+                    @endif
+                </ul>
+            @endif
         </div>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -48,6 +65,9 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('user.profile', \Auth::id()) }}">
+                                Мой профиль
+                            </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -66,11 +86,11 @@
         </div>
 
         <ul class="navbar-nav ml-auto">
-            <li>
-                <a class="nav-link" href="/locale/en">
-                    <img src="{{ asset('images/icons/usa.png') }}" style="width: 20px;"alt="">
-                </a>
-            </li>
+            {{--<li>--}}
+                {{--<a class="nav-link" href="/locale/en">--}}
+                    {{--<img src="{{ asset('images/icons/usa.png') }}" style="width: 20px;"alt="">--}}
+                {{--</a>--}}
+            {{--</li>--}}
             <li>
                 <a class="nav-link" href="/locale/ru">
                     <img src="{{ asset('images/icons/ru.png') }}" style="width: 22px;"alt="">

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Roles\Role;
 use App\Domain\Users\User;
 
+use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -49,48 +51,34 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-
-    }
-
-    public function makeAdmin(User $user)
-    {
-        $user->update([
-            'role' => 'admin'
+        return view('users.show', [
+            'user' => $user
         ]);
-
-        return redirect()->back();
-    }
-
-    public function dismiss(User $user)
-    {
-        $user->update([
-            'role' => null
-        ]);
-
-        return redirect()->back();
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('users.edit', [
+            'user' => $user
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param UpdateUserRequest $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $user->update($request->validated());
+
+        return redirect(route('user.profile', $user->id));
     }
 
     /**
@@ -103,6 +91,23 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
+        return redirect()->back();
+    }
+
+
+    public function makeAdmin(User $user)
+    {
+        $user->role()->associate(Role::find(4));
+        $user->save();
+
+        return redirect()->back();
+    }
+
+    public function dismiss(User $user)
+    {
+        $user->role()->associate(Role::find(3));
+        $user->save();
 
         return redirect()->back();
     }

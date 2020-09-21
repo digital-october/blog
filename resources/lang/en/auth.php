@@ -29,6 +29,7 @@ return [
     'registration' => 'Registration',
     'first_name' => 'First name',
     'last_name' => 'Last name',
+    'patronymic' => 'Patronymic',
     'email' => 'E-mail address',
     'password' => 'Password',
     'password_confirm' => 'Password confirm',

@@ -46,6 +46,23 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="name"
+                                       class="col-md-4 col-form-label text-md-right">{{ __('auth.patronymic') }}</label>
+
+                                <div class="col-md-6">
+                                    <input id="name" type="text"
+                                           class="form-control{{ $errors->has('patronymic') ? ' is-invalid' : '' }}"
+                                           name="patronymic" value="{{ old('patronymic') }}" required autofocus>
+
+                                    @if ($errors->has('patronymic'))
+                                        <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('patronymic') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="email"
                                        class="col-md-4 col-form-label text-md-right">{{ __('auth.email') }}</label>
 

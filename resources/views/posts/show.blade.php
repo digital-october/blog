@@ -1,43 +1,106 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
+
     <!-- Title -->
     <h1 class="mt-4">{{ $post->title }}</h1>
 
-    @if(Auth::user()->is($post->user))
-        <form class="d-inline" method="post" action="{{ route('posts.destroy', $post->id) }}">
-            @method('delete')
-            @csrf
-            <button class="btn btn-danger btn-sm float-right">
-                <i class="fa fa-trash"></i> {{ __('message.fields.delete') }}
-            </button>
-        </form>
-
-        <a class="btn btn-primary btn-sm float-right"
-           href="{{ route('posts.edit', $post->id) }}">{{ __('message.fields.edit') }}</a>
-    @endif
+    <!-- Author -->
+    <p class="lead">
+        Создатель:
+        <a href="#">{{ $post->user->present()->fullName }}</a>
+    </p>
 
     <!-- Author -->
     <p class="lead">
-        {{ __('message.fields.author') }}:
-        <a href="#">{{ $post->user->present()->fullName }}</a>
+        {{ __('Автор(ы)') }}:
+        <a href="#">{{ $post->author }}</a>
     </p>
+
+    @if(Auth::user()->is($post->user) or Auth::user()->isRoot)
+        <a class="btn btn-outline-primary btn-sm float-right"
+           href="{{ route('posts.edit', $post->id) }}">{{ __('message.fields.edit') }}</a>
+
+        <form class="d-inline" method="post" action="{{ route('posts.destroy', $post->id) }}">
+            @method('delete')
+            @csrf
+            <button class="btn btn-outline-danger btn-sm float-right">
+                <i class="fa fa-trash"></i> {{ __('message.fields.delete') }}
+            </button>
+        </form>
+        Статус: [<span class="text-danger">{{ $post->status->name }}</span>]
+        Предложен: [<span class="text-info">{{ $post->created_at->format('d.M.Y H:i:s') }}</span>]
+    @endif
+    <hr>
+
+    <!-- Categories -->
+    <p class="lead">
+        Категории:
+        @foreach($categories as $category)
+            <a class="p-2 text-muted" href="{{ route('posts.category', $category->id) }}">{{ $category->name }}</a>
+        @endforeach
+    </p>
+
     <hr>
 
     <!-- Date/Time -->
-    <p>Posted on {{ $post->created_at->format('d M Y') }}</p>
+    @if(! empty($post->published_at))
+        <p>Posted on {{ \Carbon\Carbon::make($post->published_at)->format('d M Y') }}</p>
+    @else
+        <p>Не опубликована. Создана {{ $post->created_at->format('d M Y') }}</p>
     <hr>
+    @endif
 
     <!-- Preview Image -->
-    <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
-    <hr>
+    {{--<img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">--}}
+    {{--<hr>--}}
 
     <!-- Post Content -->
     <p class="lead">{{ $post->content }}</p>
 
+    @if(!empty($post->file))
+        <a href="{{ route('posts.download', $post->id) }}" class="col-4 btn btn-outline-primary">
+            Download file
+        </a>
+    @endif
+
+    <!-- Moderation block -->
+    @if($post->status->slug !== 'accepted')
+        @if (Auth::user()->isRoot or Auth::user()->isAdministrator or Auth::user()->isRedactor)
+            <div class="card my-4">
+                <h5 class="card-header">Модерация:</h5>
+                <div class="card-body">
+                    <a href="{{ route('moderation.accepted', $post->id) }}" class="col-4 btn btn-outline-success">Принять</a>
+                    <hr>
+                    <form class="form" method="post" action="{{ route('moderation.rework', $post->id) }}">
+                        @csrf
+                        <textarea name="message" class="form-control" id="" placeholder="Что доработать..." cols="50"
+                                  rows="2"></textarea>
+                        <br>
+                        <button type="submit" class="btn btn-outline-warning col-4">Отправить на доработку</button>
+                    </form>
+                    <hr>
+                    <form class="form" method="post" action="{{ route('moderation.reject', $post->id) }}">
+                        @csrf
+                        <textarea name="message" class="form-control" placeholder="Причина отклонения..." cols="50"
+                                  rows="2"></textarea>
+                        <br>
+                        <button type="submit" class="btn btn-outline-danger col-4">Отклонить</button>
+                    </form>
+                </div>
+            </div>
+        @endif
+    @endif
+
     <!-- Comments Form -->
+    @if($post->status->slug == 'accepted')
     <div class="card my-4">
-        <h5 class="card-header">Leave a Comment:</h5>
+        <h5 class="card-header">{{ __('message.fields.leave_comment') }}:</h5>
         <div class="card-body">
 
             <form method="POST" action="{{ route('posts.comment.create', [$post->id, Auth::user()->id]) }}">
@@ -61,6 +124,7 @@
 
         </div>
     </div>
+    @endif
 
 
     @if (isset($comments))

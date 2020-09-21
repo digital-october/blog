@@ -29,6 +29,7 @@ return [
     'registration' => 'Регистрация',
     'first_name' => 'Имя',
     'last_name' => 'Фамилия',
+    'patronymic' => 'Отчество',
     'email' => 'E-mail адрес',
     'password' => 'Пароль',
     'password_confirm' => 'Подтвердите пароль',
